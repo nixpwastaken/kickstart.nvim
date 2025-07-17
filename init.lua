@@ -618,9 +618,32 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        'stylua', -- For Lua formatting
+        'gofumpt', -- For Go formatting
+        'goimports', -- For Go imports management
+        'golangci-lint', -- For Go linting
+        'delve', -- For Go debugging
       })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+
+      require('mason-tool-installer').setup {
+        ensure_installed = {
+          'gopls',
+          'gofumpt',
+          'goimports',
+          'golangci-lint',
+          'delve',
+          'gomodifytags',
+          'impl',
+          'iferr',
+          'gotests',
+        },
+      }
+
+      -- Keymaps for Go specific tools
+      vim.keymap.set('n', '<leader>gt', '<cmd>GoTagAdd<cr>', { desc = '[G]o Add [T]ags' })
+      vim.keymap.set('n', '<leader>gT', '<cmd>GoTagRm<cr>', { desc = '[G]o Remove [T]ags' })
+      vim.keymap.set('n', '<leader>ge', '<cmd>GoIfErr<cr>', { desc = '[G]o [E]rror handling' })
+      vim.keymap.set('n', '<leader>gi', '<cmd>GoImpl<cr>', { desc = '[G]o [I]mplement interface' })
 
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
@@ -671,11 +694,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        go = { 'gofumpt', 'goimports' },
       },
     },
   },
