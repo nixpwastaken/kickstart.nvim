@@ -623,21 +623,13 @@ require('lazy').setup({
         'goimports', -- For Go imports management
         'golangci-lint', -- For Go linting
         'delve', -- For Go debugging
+        'gomodifytags', -- For struct tags
+        'impl', -- For interface implementation
+        'iferr', -- For error handling
+        'gotests', -- For test generation
       })
 
-      require('mason-tool-installer').setup {
-        ensure_installed = {
-          'gopls',
-          'gofumpt',
-          'goimports',
-          'golangci-lint',
-          'delve',
-          'gomodifytags',
-          'impl',
-          'iferr',
-          'gotests',
-        },
-      }
+      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       -- Keymaps for Go specific tools
       vim.keymap.set('n', '<leader>gt', '<cmd>GoTagAdd<cr>', { desc = '[G]o Add [T]ags' })
